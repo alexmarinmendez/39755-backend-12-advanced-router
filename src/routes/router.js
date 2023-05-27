@@ -13,7 +13,7 @@ export default class MyRouter {
     }
 
     get(path, ...callbacks) {
-        this.router.get(path, this.applyCallbacks(callbacks))
+        this.router.get(path, this.generateCustomResponses, this.applyCallbacks(callbacks))
     }
 
     applyCallbacks(callbacks) {
@@ -24,5 +24,10 @@ export default class MyRouter {
                 params[1].status(500).send(error)
             }
         })
+    }
+
+    generateCustomResponses(req, res, next) {
+       res.sendSuccess = payload => res.send({ status: 'success', payload }) 
+       next()
     }
 }
